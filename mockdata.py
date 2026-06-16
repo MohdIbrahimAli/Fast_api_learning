@@ -1,20 +1,20 @@
 products = [
     {
  "id" : 1,   
- "title":"Intel laptop",
+ "brand":"Intel laptop",
  "price": 12000,
- "count": 19
+ "name": 'Laptop'
 },
   {
  "id" : 2,   
- "title":"Dell ",
+ "brand":"Dell ",
  "price": 13000,
- "count": 12
+ "name": "Laptop"
 },
   {
  "id" : 3,   
- "title":"Mac book",
+ "brand":"Mac book",
  "price": 18000,
- "count": 12
+ "name": "Laptop"
 },
 ]

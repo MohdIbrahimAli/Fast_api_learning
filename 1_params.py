@@ -8,7 +8,7 @@ def home():
     return "Welcome to the ecommerce world"
 
 #Path parameters
-@app.get("/product/{prod_id}")
+@app.get("/product/{prod_id}")          #localhost:8000/product/1    
 def product_get(prod_id:int):
     for product in products:
         if product.get("id") == prod_id:
@@ -18,15 +18,15 @@ def product_get(prod_id:int):
     }
 
 #Query parameters
-@app.get("/greet")
-def greeting(name:str, age:int=12):
+@app.get("/greet")              #localhost:8000/greet?name=ibrahim&age=20  or  localhost:8000/greet?name=ibrahim  default age is taken
+def greeting(name:str, age:int=12): #default parameter for age
     return {
         "greeting":f"Hello {name} how are you",
         "age":f"Your age is {age}"
     }
 
 #Requests
-@app.get("/search")
+@app.get("/search")          #localhost:8000/greet?name=ibrahim&age=20
 def search(request:Request):
     queary_params = dict(request.query_params)
     return {

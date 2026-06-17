@@ -34,3 +34,11 @@ def update_product(data:ProductsDTO, prod_id:int):
             products[index] = data.model_dump()
             return {"Success": "Product Updated successfully", "product":data}
         return{"error":"Product not found for the ID"}
+
+@app.delete("/delete_product/{prod_id}")
+def delete_product(prod_id:int):
+    for product in products:
+        if product.get("id") == prod_id:
+            products.remove(product)
+            return {"Success":"Product Deleted"}
+            

@@ -26,3 +26,11 @@ def create_product(data:ProductsDTO):
     products.append(data)
     print(data)
     return {"Success":"Product created successfully", "data":products}
+
+@app.put("/update_product/{prod_id}")
+def update_product(data:ProductsDTO, prod_id:int):
+    for index, product in enumerate(products):
+        if product.get('id') == prod_id:
+            products[index] = data.model_dump()
+            return {"Success": "Product Updated successfully", "product":data}
+        return{"error":"Product not found for the ID"}

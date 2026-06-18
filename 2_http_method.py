@@ -40,5 +40,8 @@ def delete_product(prod_id:int):
     for product in products:
         if product.get("id") == prod_id:
             products.remove(product)
-            return {"Success":"Product Deleted"}
+            return {"Success":"Product Deleted successfully"}
+        return{
+            "error":"Product not found for the ID"
+        }
             

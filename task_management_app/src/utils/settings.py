@@ -5,5 +5,3 @@ class Settings(BaseSettings):
     DB_CONNECTION :str
 
 settings = Settings()
-
-print(settings.DB_CONNECTION)

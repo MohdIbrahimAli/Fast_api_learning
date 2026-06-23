@@ -13,3 +13,7 @@ def create_task(body:CreateTask, db:Session):
     db.commit()
     db.refresh(new_task)
     return {"status":"task created successfully", "data":new_task}
+
+def get_task(db:Session):
+    tasks = db.query(TaskModels).all()
+    return {"status":"All the rows successfully imported", "data":tasks}

@@ -1,7 +1,8 @@
 from fastapi import FastAPI 
 from src.utils.db import Base, engine
-from src.tasks.models import TaskModels
+from src.tasks.router import task_routes
 
 Base.metadata.create_all(engine)
 
 app = FastAPI(title="Task Management application made using FastAPI")
+app.include_router(task_routes)

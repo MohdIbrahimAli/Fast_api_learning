@@ -6,4 +6,4 @@ class TaskModels(Base):
     id = Column(Integer, primary_key=True)
     title = Column(String)
     description = Column(String)
-    is_completed = Column(Boolean)
+    is_completed = Column(Boolean, default=False)

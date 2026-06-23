@@ -24,3 +24,11 @@ def get_task_by_id(id:int,db:Session):
     if not task:
         raise HTTPException(404, detail="Invalid Task ID")
     return {'status':"Task found", "Task":task}
+
+def delete_task(id:int, db:Session):
+    task = db.query(TaskModels).get(id)
+    if not task:
+        raise HTTPException(404, details = "Invalid Task ID")
+    db.delete(task)
+    db.commit()
+    return {"status":"Task deleted Successfully"}

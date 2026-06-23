@@ -32,3 +32,18 @@ def delete_task(id:int, db:Session):
     db.delete(task)
     db.commit()
     return {"status":"Task deleted Successfully"}
+
+def update_task(id:int, body:CreateTask,db:Session):
+    task = db.query(TaskModels).get(id)
+    if not task:
+        raise HTTPException(404, details = "Invalid Task ID")
+    
+    task.title = body.title
+    task.description = body.description
+    task.is_completed = body.is_completed
+
+    db.add(task)
+    db.commit()
+    db.refresh(task)
+    
+    return {"status":"Task Updated Successfully", "data":task}

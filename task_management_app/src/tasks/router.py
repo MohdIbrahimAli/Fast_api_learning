@@ -12,3 +12,7 @@ def create_task(body:CreateTask, db = Depends(get_db)):
 @task_routes.get("/all_tasks")
 def get_tasks(db = Depends(get_db)):
     return controller.get_task(db)
+
+@task_routes.get("/one_task/{id}")
+def get_task_by_id(id:int, db = Depends(get_db)):
+    return controller.get_task_by_id(id,db)

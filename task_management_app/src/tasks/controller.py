@@ -38,9 +38,13 @@ def update_task(id:int, body:CreateTask,db:Session):
     if not task:
         raise HTTPException(404, details = "Invalid Task ID")
     
-    task.title = body.title
-    task.description = body.description
-    task.is_completed = body.is_completed
+    body = body.model_dump()
+    for field, value in body.items():
+        setattr(task, field, value)
+
+    # task.title = body.title
+    # task.description = body.description
+    # task.is_completed = body.is_completed
 
     db.add(task)
     db.commit()

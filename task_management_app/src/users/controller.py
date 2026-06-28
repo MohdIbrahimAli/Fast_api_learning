@@ -1,5 +1,6 @@
 import jwt
-from fastapi import HTTPException, status
+from jwt.exceptions import InvalidTokenError
+from fastapi import HTTPException, status, Request
 from pwdlib import PasswordHash
 from datetime import datetime, timedelta
 
@@ -49,8 +50,26 @@ def login(body:LoginSchema, db:Session):
     if not verify_password(body.password, user.hash_password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail="Password is incorrect")
     
-    exp_time = datetime.now() + timedelta(minutes=settings.EXP_TIME)
+    exp_time = datetime.now() + timedelta(seconds=20)
      
-    token = jwt.encode({"_username":user.username, "exp":exp_time}, key=settings.SECRET_KEY, algorithm=settings.ALGORITHM)
+    token = jwt.encode({"_username":user.username, "exp":exp_time.timestamp()}, key=settings.SECRET_KEY, algorithm=settings.ALGORITHM)
 
     return {"token":token}
+
+
+def is_auth(request:Request, db:Session):
+    try:
+        token = request.headers.get("authorization")
+        if not token:
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Not Authorized")
+        token = token.split(" ")[-1]
+
+        data = jwt.decode(token, settings.SECRET_KEY, settings.ALGORITHM)
+        username = data.get("_username")
+
+        user = db.query(UserModel).filter(UserModel.username == username).first()
+        if not user:
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="username notfound")
+        return user
+    except InvalidTokenError:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Not Authorized")

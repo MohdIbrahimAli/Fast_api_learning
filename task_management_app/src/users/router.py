@@ -1,4 +1,4 @@
-from fastapi import APIRouter, status, Depends
+from fastapi import APIRouter, status, Depends, Request
 from src.utils.db import get_db
 from src.users import controller
 from src.users.dtos import UserSchema, UserResponseSchema, LoginSchema
@@ -15,3 +15,7 @@ def user_registration(body:UserSchema, db : Session = Depends(get_db)):
 @user_routes.post("/login", status_code=status.HTTP_200_OK)
 def login(body:LoginSchema, db:Session = Depends(get_db)):
     return controller.login(body, db)
+
+@user_routes.get("/is_auth",response_model=UserResponseSchema,status_code=status.HTTP_200_OK)
+def is_auth(request:Request, db:Session = Depends(get_db)):
+    return controller.is_auth(request, db)

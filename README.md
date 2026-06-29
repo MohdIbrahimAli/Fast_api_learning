@@ -24,3 +24,5 @@ install the dependencies
 ``` bash
 pip install -r requirements.txt
 ```
+
+![CI](https://github.com/MohdIbrahimAli/Fast_api_learning/actions/workflows/pylint.yml/badge.svg) <br/>

@@ -2,15 +2,16 @@ from src.tasks.dtos import CreateTask
 from sqlalchemy.orm import Session
 from src.tasks.models import TaskModels
 from fastapi import HTTPException
+from src.users.models import UserModel
 
 
-
-def create_task(body:CreateTask, db:Session):
+def create_task(body:CreateTask, db:Session, user:UserModel):
     data = body.model_dump()
     new_task = TaskModels(
         title = data["title"],
         description = data["description"],
-        is_completed = data["is_completed"]
+        is_completed = data["is_completed"],
+        user_id = user.id
     )
     db.add(new_task)
     db.commit()

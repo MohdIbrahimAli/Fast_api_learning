@@ -20,42 +20,49 @@ def create_task(body:CreateTask, db:Session, user:UserModel):
 
 
 
-def get_task(db:Session):
-    tasks = db.query(TaskModels).all()
+def get_task(db:Session, user:UserModel):
+    tasks = db.query(TaskModels).filter(TaskModels.user_id == user.id).all()
     return tasks
 
 
 
-def get_task_by_id(id:int,db:Session):
-    task = db.query(TaskModels).get(id)
+def get_task_by_id(id:int,db:Session, user:UserModel):
+    task = db.query(TaskModels).filter(
+        TaskModels.user_id == user.id,
+        TaskModels.id == id
+    ).first()
     if not task:
         raise HTTPException(404, detail="Invalid Task ID")
     return task
 
 
 
-def delete_task(id:int, db:Session):
-    task = db.query(TaskModels).get(id)
+def delete_task(id:int, db:Session, user:UserModel):
+    task = db.query(TaskModels).filter(
+        TaskModels.user_id == user.id,
+        TaskModels.id == id
+    ).first()
     if not task:
-        raise HTTPException(404, details = "Invalid Task ID")
+        raise HTTPException(404, detail = "Invalid Task ID")
     db.delete(task)
     db.commit()
     return None
 
 
 
-def update_task(id:int, body:CreateTask,db:Session):
-    task = db.query(TaskModels).get(id)
-    if not task:
-        raise HTTPException(404, details = "Invalid Task ID")
+def update_task(id:int, body:CreateTask,db:Session, user:UserModel):
+    task = (db.query(TaskModels).filter(
+        TaskModels.user_id == user.id,
+        TaskModels.id == id
+    ).first())
+
+    if task is None:
+        raise HTTPException(status_code=404, detail = "Invalid Task ID")
     
-    body = body.model_dump()
+    body = body.model_dump(exclude_unset=True)
+
     for field, value in body.items():
         setattr(task, field, value)
-
-    # task.title = body.title
-    # task.description = body.description
-    # task.is_completed = body.is_completed
 
     db.add(task)
     db.commit()

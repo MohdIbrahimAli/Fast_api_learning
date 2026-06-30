@@ -1,14 +1,19 @@
+"""Database configuration and session dependency."""
+
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy.orm import declarative_base, sessionmaker
+
 from src.utils.settings import settings
 
 Base = declarative_base()
-engine = create_engine(url = settings.DB_CONNECTION)
+engine = create_engine(settings.DB_CONNECTION, echo=False)
 
-LocalSession = sessionmaker(bind = engine)
+SESSION_FACTORY = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+
 
 def get_db():
-    session = LocalSession()
+    """Provide a database session for each request."""
+    session = SESSION_FACTORY()
     try:
         yield session
     finally:

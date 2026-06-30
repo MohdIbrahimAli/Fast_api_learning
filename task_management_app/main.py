@@ -1,7 +1,10 @@
-from fastapi import FastAPI 
-from src.utils.db import Base, engine
+"""Application entrypoint for the task management API."""
+
+from fastapi import FastAPI
+
 from src.tasks.router import task_routes
 from src.users.router import user_routes
+from src.utils.db import Base, engine
 
 Base.metadata.create_all(engine)
 

@@ -1,17 +1,27 @@
-from pydantic import BaseModel, ConfigDict
+"""Pydantic schemas for authentication payloads."""
+
+from pydantic import BaseModel
+
 
 class UserSchema(BaseModel):
-    name : str
-    username : str
-    password : str
-    email : str
+    """Schema used for user registration."""
+
+    name: str
+    username: str
+    password: str
+    email: str
+
 
 class UserResponseSchema(BaseModel):
-    name : str
-    username : str
-    email : str
+    """Schema returned after successful registration."""
+
+    name: str
+    username: str
+    email: str
+
 
 class LoginSchema(BaseModel):
-    username : str
-    password : str
-    
+    """Schema used for user login."""
+
+    username: str
+    password: str
